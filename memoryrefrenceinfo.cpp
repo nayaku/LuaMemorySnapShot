@@ -416,38 +416,38 @@ void MemoryRefrenceInfoMgr::setRunning(bool bRun)
 void MemoryRefrenceInfoMgr::run()
 {
 #if 0
-	//test
-	this->parse("function: 000000A4E124E570	registry.2[_G].RankListModule.[metatable].__newindex.[ups:table:vtbl].Instance.delete_me[line:88@file:[string \"scripts/engine/baseclass.lua\"]]	2780");
-	this->parse("function: 00007FFA73E43530	registry.2[_G].StringUtils.split.[ups:function:strSub][line:-1@file:[C]]	7");
-	this->parse("string: \"equip_ icon_10007\"	registry.2[_G].ItemConfig.data.913207.Icon[string]	6");
-	this->parse("table: 000000A4F47047B0	registry.2[_G].WorldEnterController.__init.[ups:table:MOVE_TYPE]	6");
+    //test
+    this->parse("function: 000000A4E124E570	registry.2[_G].RankListModule.[metatable].__newindex.[ups:table:vtbl].Instance.delete_me[line:88@file:[string \"scripts/engine/baseclass.lua\"]]	2780");
+    this->parse("function: 00007FFA73E43530	registry.2[_G].StringUtils.split.[ups:function:strSub][line:-1@file:[C]]	7");
+    this->parse("string: \"equip_ icon_10007\"	registry.2[_G].ItemConfig.data.913207.Icon[string]	6");
+    this->parse("table: 000000A4F47047B0	registry.2[_G].WorldEnterController.__init.[ups:table:MOVE_TYPE]	6");
 #else
-	auto _timeBegin = QTime::currentTime();
+    auto _timeBegin = QTime::currentTime();
     std::string filePath = m_filePath.toLocal8Bit().data();
     FILE* pFile = fopen(filePath.c_str(), "r");
-	if(pFile) {
-		fseek(pFile, 0, SEEK_END);
-		long fileSize = ftell(pFile);
-		fseek(pFile, 0, SEEK_SET);
-		static int maxLen = 1024 * 10;
-		char line[maxLen] = {};
-		while (m_bRunning && fgets(line, maxLen, pFile)) {
-			this->parse(line, m_infoMgrBase);
-			int progress = ftell(pFile) * 100 / fileSize;
-			emit parseRunning(m_filePath,
-							  _timeBegin.msecsTo(QTime::currentTime()),
-							  progress);
-		}
-		fclose(pFile);
-	}
+    if(pFile) {
+        fseek(pFile, 0, SEEK_END);
+        long fileSize = ftell(pFile);
+        fseek(pFile, 0, SEEK_SET);
+        static const int maxLen = 1024 * 10;
+        char line[maxLen] = {0};
+        while (m_bRunning && fgets(line, maxLen, pFile)) {
+            this->parse(line, m_infoMgrBase);
+            int progress = ftell(pFile) * 100 / fileSize;
+            emit parseRunning(m_filePath,
+                              _timeBegin.msecsTo(QTime::currentTime()),
+                              progress);
+        }
+        fclose(pFile);
+    }
 #endif
 
-	//中止时不发事件
-	if (m_bRunning) {
-		emit parseFinished(m_filePath);
-	}
+    //中止时不发事件
+    if (m_bRunning) {
+        emit parseFinished(m_filePath);
+    }
 
-	//解析单次有效，解析完置空
-	m_filePath.clear();
-	m_infoMgrBase = nullptr;
+    //解析单次有效，解析完置空
+    m_filePath.clear();
+    m_infoMgrBase = nullptr;
 }
