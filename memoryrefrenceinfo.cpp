@@ -423,7 +423,8 @@ void MemoryRefrenceInfoMgr::run()
 	this->parse("table: 000000A4F47047B0	registry.2[_G].WorldEnterController.__init.[ups:table:MOVE_TYPE]	6");
 #else
 	auto _timeBegin = QTime::currentTime();
-	FILE* pFile = fopen(m_filePath.toUtf8(), "r");
+    std::string filePath = m_filePath.toLocal8Bit().data();
+    FILE* pFile = fopen(filePath.c_str(), "r");
 	if(pFile) {
 		fseek(pFile, 0, SEEK_END);
 		long fileSize = ftell(pFile);
