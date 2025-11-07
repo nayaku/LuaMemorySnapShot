@@ -246,10 +246,10 @@ void MemoryRefrenceInfoMgr::parse(const QString& strInfo, MemoryRefrenceInfoMgr*
 		return;
 	}
 
-	if(!strRefTree.startsWith("registry")) {
-		//字符串内有空格时，解析有问题，暂时return掉，后面再修复
-		return;
-	}
+	// if(!strRefTree.startsWith("registry")) {
+	// 	//字符串内有空格时，解析有问题，暂时return掉，后面再修复
+	// 	return;
+	// }
 
 	//register
 	static auto _getInfoName = [](QString& strRefTree, QString& strName) {
