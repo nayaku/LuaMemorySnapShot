@@ -53,7 +53,7 @@ public:
 
 	void sort(bool bUpper = false);
 
-	friend operator < (MemoryRefrenceInfo& info1, MemoryRefrenceInfo& info2) {
+	friend bool operator < (MemoryRefrenceInfo& info1, MemoryRefrenceInfo& info2) {
 		return info1.getSumRefCount() < info2.getSumRefCount();
 	};
 
